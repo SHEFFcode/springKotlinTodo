@@ -37,8 +37,8 @@ class TaskController(private val taskService: TaskService) {
     }
 
     @GetMapping(value = ["/tasks/simple/{id}"], produces = ["application/json"])
-    fun getTaskBySimpleId(@PathVariable("id") id: UUID): ResponseEntity<TaskDto> {
-        val task = taskService.getTaskById(id)
+    fun getTaskBySimpleId(@PathVariable("id") id: Long): ResponseEntity<TaskDto> {
+        val task = taskService.getTaskBySimpleId(id)
         return ResponseEntity.ok(task)
     }
 

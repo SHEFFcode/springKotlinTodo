@@ -48,6 +48,12 @@ class TaskService(private val taskRepository: TaskRepository) {
         return entityToDtoMapping(task!!)
     }
 
+    fun getTaskBySimpleId(simpleId: Long): TaskDto {
+        checkTaskForSimpleId(simpleId)
+        val task =  taskRepository.findTaskBySimpleId(simpleId)
+        return entityToDtoMapping(task!!)
+    }
+
     fun getAllTasks(): List<TaskDto> {
         return taskRepository.findAll().map { entityToDtoMapping(it) }
     }
@@ -78,6 +84,7 @@ class TaskService(private val taskRepository: TaskRepository) {
             this.description = taskUpdateDto.description ?: this.description
             this.isReminderSet = taskUpdateDto.isReminderSet ?: this.isReminderSet
             this.isTaskOpen = taskUpdateDto.isTaskOpen ?: this.isTaskOpen
+            this.priority = taskUpdateDto.priority ?: this.priority
         }
 
         taskRepository.save(updatedTask)
@@ -92,6 +99,7 @@ class TaskService(private val taskRepository: TaskRepository) {
             this.description = taskUpdateDto.description ?: this.description
             this.isReminderSet = taskUpdateDto.isReminderSet ?: this.isReminderSet
             this.isTaskOpen = taskUpdateDto.isTaskOpen ?: this.isTaskOpen
+            this.priority = taskUpdateDto.priority ?: this.priority
         }
 
         taskRepository.save(updatedTask)
@@ -107,7 +115,8 @@ class TaskService(private val taskRepository: TaskRepository) {
 
     fun deleteTaskBySimpleId(simpleId: Long): Long {
         checkTaskForSimpleId(simpleId)
-        taskRepository.findTaskBySimpleId(simpleId)
+        val taskToDelete = taskRepository.findTaskBySimpleId(simpleId)
+        taskRepository.delete(taskToDelete!!)
         return simpleId
     }
 }
