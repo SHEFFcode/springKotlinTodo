@@ -33,6 +33,7 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.23.1")
     testImplementation("io.mockk:mockk:1.13.2")
+    testImplementation("com.h2database:h2")
 }
 
 kotlin {

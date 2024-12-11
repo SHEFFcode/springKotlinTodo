@@ -12,10 +12,10 @@ interface TaskRepository : JpaRepository<Task, UUID> {
     fun findTaskBySimpleId(simpleId: Long): Task?
 
 
-    @Query("SELECT * FROM task WHERE task_is_open = TRUE", nativeQuery = true)
+    @Query("SELECT * FROM task WHERE is_task_open = TRUE", nativeQuery = true)
     fun queryAllOpenTasks(): List<Task>
 
-    @Query("SELECT * FROM task WHERE task_is_open = FALSE", nativeQuery = true)
+    @Query("SELECT * FROM task WHERE is_task_open = FALSE", nativeQuery = true)
     fun queryAllClosedTasks(): List<Task>
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM Task t WHERE t.description = :description")

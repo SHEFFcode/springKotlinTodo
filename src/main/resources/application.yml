@@ -3,13 +3,13 @@ spring:
     name: task_app
   datasource:
     username: ${DATASOURCE_USERNAME:sa}
-    password: ${DATASOURCE_PASSWORD:''}
-    url: ${DATASOURCE_URL:jdbc:mem:testdb}
+    password: ${DATASOURCE_PASSWORD:password}
+    url: ${DATASOURCE_URL:jdbc:h2:mem:testdb}
     driverClassName: ${DATASOURCE_DRIVER_CLASS_NAME:org.h2.Driver}
   jpa:
     database: ${JPA_DATABASE:h2}
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         jdbc:
