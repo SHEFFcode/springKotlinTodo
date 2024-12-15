@@ -4,6 +4,7 @@ import com.sheffmachine.task_app.data.Priority
 import com.sheffmachine.task_app.data.Task
 import com.sheffmachine.task_app.model.TaskCreateDto
 import com.sheffmachine.task_app.model.TaskDto
+import com.sheffmachine.task_app.model.TaskUpdateDto
 import com.sheffmachine.task_app.repository.TaskRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -104,23 +105,38 @@ class TaskServiceTest {
     }
 
     @Test
-    fun getAllOpenTasks() {}
+    fun `make sure update task works`() {
+        // Arrange
+        val existingTaskDto = TaskCreateDto(
+            description = "hello-world",
+            createdOn = LocalDateTime.now(),
+            priority = Priority.MEDIUM.toString(),
+            isTaskOpen = true,
+            isReminderSet = false,
+        )
 
-    @Test
-    fun getAllClosedTasks() {}
+        val existingTask = Task(
+            id = UUID.randomUUID(),
+            description = "hello-world",
+            createdOn = existingTaskDto.createdOn,
+            priority = Priority.MEDIUM,
+            isTaskOpen = true,
+            isReminderSet = false,
+        )
 
-    @Test
-    fun createTask() {}
+        val taskWithUpdatedDescription = existingTask.copy(description = "goodbye-friends")
 
-    @Test
-    fun updateTask() {}
+        every { mockRepository.save(any()) } returns existingTask
+        every { mockRepository.findTaskById(any()) } returns taskWithUpdatedDescription
 
-    @Test
-    fun updateTaskBySimpleId() {}
+        val savedTask = taskService.createTask(existingTaskDto)
+        // Act
 
-    @Test
-    fun deleteTask() {}
+        val updatedTask = taskService.updateTask(savedTask.id, TaskUpdateDto(description = "goodbye-friends"))
 
-    @Test
-    fun deleteTaskBySimpleId() {}
+        // Assert
+        val foundTask = taskService.getTaskById(updatedTask.id)
+        assertThat(updatedTask.description).isEqualTo(foundTask.description)
+
+    }
 }
